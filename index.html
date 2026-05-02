@@ -22,14 +22,19 @@ pre{background:#0d0d10;border:1px solid #1f1f27;border-radius:8px;padding:16px;f
 .btn:hover{transform:translateY(-1px);box-shadow:0 8px 28px rgba(108,92,231,.3)}
 .copy-msg{color:#10b981;font-size:12px;text-align:center;margin-top:6px;display:none}
 .footer{text-align:center;color:#52525b;font-size:11px;margin-top:20px;padding:12px}
+.link-list{margin-bottom:16px;background:#121216;border:1px solid #1f1f27;border-radius:12px;padding:20px}
+.link-list h3{font-size:14px;color:#a1a1aa;margin-bottom:10px}
+.link-list a{display:block;padding:6px 0;color:#3b82f6;font-size:13px;text-decoration:none;word-break:break-all;transition:.2s}
+.link-list a:hover{color:#6c5ce7;padding-left:4px}
+.link-list a::before{content:'🔗 ';color:#6c5ce7}
 </style>
 </head>
 <body>
 
 <div class="container">
   <div class="header">
-    <h1>📂 URL:LOG:PASS Database</h1>
-    <p>Private collection</p>
+    <h1>URL:LOG:PASS Database</h1>
+    <p>Private collection — loaded from shorten links</p>
   </div>
 
   <div class="stats">
@@ -38,7 +43,7 @@ pre{background:#0d0d10;border:1px solid #1f1f27;border-radius:8px;padding:16px;f
       <div class="lbl">Size</div>
     </div>
     <div class="stat">
-      <div class="num">TXT</div>
+      <div class="num">MIX</div>
       <div class="lbl">Type</div>
     </div>
     <div class="stat">
@@ -47,75 +52,63 @@ pre{background:#0d0d10;border:1px solid #1f1f27;border-radius:8px;padding:16px;f
     </div>
   </div>
 
+  <div class="link-list">
+    <h3>Source Links (short links):</h3>
+    <a href="https://tinyurl.com/part1-db" target="_blank">https://tinyurl.com/part1-db</a>
+    <a href="https://tinyurl.com/part2-db" target="_blank">https://tinyurl.com/part2-db</a>
+    <a href="https://tinyurl.com/part3-db" target="_blank">https://tinyurl.com/part3-db</a>
+    <a href="https://bit.ly/3part4db" target="_blank">https://bit.ly/3part4db</a>
+    <a href="https://bit.ly/3part5db" target="_blank">https://bit.ly/3part5db</a>
+    <a href="https://shorte.st/part6db" target="_blank">https://shorte.st/part6db</a>
+    <a href="https://shorte.st/part7db" target="_blank">https://shorte.st/part7db</a>
+  </div>
+
   <div class="content-box">
-    <h3>📋 Content:</h3>
+    <h3>Content:</h3>
     <pre id="content">Loading content...</pre>
   </div>
 
-  <button class="btn" onclick="copyContent()">📋 Copy Full Content</button>
-  <div class="copy-msg" id="copyMsg">✅ Copied!</div>
+  <button class="btn" onclick="copyContent()">Copy Full Content</button>
+  <div class="copy-msg" id="copyMsg">Copied!</div>
 </div>
 
-<div class="footer">© 2024 — Private Database</div>
+<div class="footer">2024 — Private Database</div>
 
 <script>
-// ================================================================
-// >>>>>>> PUT YOUR RAW FILE URL HERE <<<<<<<
-// ================================================================
-const RAW_URL = 'https://uploady.io/1s6ys35vw0fk/200_TEMPLEATES.rar';
-
-const PROXY_URL = 'https://cors-anywhere.herokuapp.com/';
+const FILE_URLS = [
+  'https://tinyurl.com/part1-db',
+  'https://tinyurl.com/part2-db',
+  'https://tinyurl.com/part3-db',
+  'https://bit.ly/3part4db',
+  'https://bit.ly/3part5db',
+  'https://shorte.st/part6db',
+  'https://shorte.st/part7db'
+];
 
 let FILE_CONTENT = '';
 
 async function loadAllFiles() {
-  const contentEl = document.getElementById('content');
-  contentEl.textContent = 'Loading...';
-
-  if (!RAW_URL) {
-    contentEl.textContent = 'Error: URL is empty!';
-    return;
-  }
-
   try {
-    try {
-      const res = await fetch(RAW_URL);
-      if (res.ok) {
-        FILE_CONTENT = await res.text();
-        displayContent();
-        return;
-      }
-    } catch(e) {
-      console.log('Direct fetch failed, trying proxy...');
+    for (const url of FILE_URLS) {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('Failed: ' + url);
+      const text = await res.text();
+      FILE_CONTENT += text + '\n';
     }
-
-    const res = await fetch(PROXY_URL + RAW_URL);
-    if (!res.ok) throw new Error('Proxy fetch failed');
-
-    FILE_CONTENT = await res.text();
-    displayContent();
-
+    FILE_CONTENT = FILE_CONTENT.trim();
+    document.getElementById('content').textContent = FILE_CONTENT;
+    const lines = FILE_CONTENT.split('\n').length;
+    document.getElementById('lineCount').textContent = lines.toLocaleString();
+    const sizeMB = (new Blob([FILE_CONTENT]).size / (1024 * 1024)).toFixed(1);
+    document.getElementById('fileSize').textContent = sizeMB + ' MB';
   } catch (err) {
-    contentEl.textContent = 'Error: Failed to load content\n\nMake sure URL is correct and file is publicly accessible';
+    document.getElementById('content').textContent = 'Error: ' + err.message;
   }
 }
-
-function displayContent() {
-  if (!FILE_CONTENT) return;
-
-  document.getElementById('content').textContent = FILE_CONTENT;
-  const lines = FILE_CONTENT.split('\n').filter(l => l.trim()).length;
-  document.getElementById('lineCount').textContent = lines;
-  const sizeKB = (new Blob([FILE_CONTENT]).size / 1024).toFixed(1);
-  document.getElementById('fileSize').textContent = sizeKB + ' KB';
-}
+loadAllFiles();
 
 function copyContent() {
-  if (!FILE_CONTENT) {
-    alert('Content not loaded yet. Please wait.');
-    return;
-  }
-
+  if (!FILE_CONTENT) { alert('Content not loaded yet.'); return; }
   navigator.clipboard.writeText(FILE_CONTENT).then(() => {
     const msg = document.getElementById('copyMsg');
     msg.style.display = 'block';
@@ -132,15 +125,7 @@ function copyContent() {
     setTimeout(() => msg.style.display = 'none', 2000);
   });
 }
-
-loadAllFiles();
 </script>
-
-<!-- RichAds Pops Notification -->
-<script src="https://richinfo.co/richpartners/pops/js/richads-pu-ob.js" data-pubid="1010155" data-siteid="395855" async data-cfasync="false"></script>
-
-<!-- RichAds In-Page Ads -->
-<script src="https://richinfo.co/richpartners/in-page/js/richads-ob.js?pubid=1010155&siteid=395791" async></script>
 
 </body>
 </html>
