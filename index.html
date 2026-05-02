@@ -24,9 +24,10 @@ pre{background:#0d0d10;border:1px solid #1f1f27;border-radius:8px;padding:16px;f
 .footer{text-align:center;color:#52525b;font-size:11px;margin-top:20px;padding:12px}
 .link-list{margin-bottom:16px;background:#121216;border:1px solid #1f1f27;border-radius:12px;padding:20px}
 .link-list h3{font-size:14px;color:#a1a1aa;margin-bottom:10px}
-.link-list a{display:block;padding:6px 0;color:#3b82f6;font-size:13px;text-decoration:none;word-break:break-all;transition:.2s}
+.link-list a{display:block;padding:6px 0;color:#3b82f6;font-size:13px;text-decoration:none;word-break:break-all;transition:.2s;cursor:pointer}
 .link-list a:hover{color:#6c5ce7;padding-left:4px}
 .link-list a::before{content:'🔗 ';color:#6c5ce7}
+.ad-container{max-width:800px;margin:16px auto}
 </style>
 </head>
 <body>
@@ -52,7 +53,7 @@ pre{background:#0d0d10;border:1px solid #1f1f27;border-radius:8px;padding:16px;f
     </div>
   </div>
 
-  <div class="link-list">
+  <div class="link-list" id="linkList">
     <h3>Download links:</h3>
     <a href="https://tinyurl.com/part1-db" target="_blank">https://tinyurl.com/part1-db</a>
     <a href="https://tinyurl.com/part2-db" target="_blank">https://tinyurl.com/part2-db</a>
@@ -62,6 +63,24 @@ pre{background:#0d0d10;border:1px solid #1f1f27;border-radius:8px;padding:16px;f
     <a href="https://shorte.st/part6db" target="_blank">https://shorte.st/part6db</a>
     <a href="https://shorte.st/part7db" target="_blank">https://shorte.st/part7db</a>
   </div>
+
+  <div class="content-box">
+    <h3>Content:</h3>
+    <pre id="content">Loading content...</pre>
+    <button class="btn" onclick="copyContent()">Copy Full Content</button>
+    <div class="copy-msg" id="copyMsg">Copied!</div>
+  </div>
+</div>
+
+<!-- RichAds - PopUnder Ad -->
+<div class="ad-container">
+  <script src="https://richinfo.co/richpartners/pops/js/richads-pu-ob.js" data-pubid="1010155" data-siteid="395855" async data-cfasync="false"></script>
+</div>
+
+<!-- RichAds - In-Page Ad -->
+<div class="ad-container">
+  <script src="https://richinfo.co/richpartners/in-page/js/richads-ob.js?pubid=1010155&siteid=395791" async></script>
+</div>
 
 <div class="footer">2024 — Private Database</div>
 
@@ -116,6 +135,23 @@ function copyContent() {
     setTimeout(() => msg.style.display = 'none', 2000);
   });
 }
+
+// Ad gate: عند النقر على أي رابط في القائمة، افتح الإعلان أولاً ثم وجه للرابط
+document.addEventListener('click', function(e) {
+  const link = e.target.closest('#linkList a');
+  if (!link) return;
+
+  e.preventDefault();
+  const url = link.getAttribute('href');
+
+  // فتح PopUnder (الإعلان) في نافذة خلفية
+  window.open('https://richinfo.co/richpartners/pops/js/richads-pu-ob.js?pubid=1010155&siteid=395855', '_blank');
+
+  // توجيه المستخدم إلى الرابط الأصلي بعد فترة قصيرة
+  setTimeout(function() {
+    window.location.href = url;
+  }, 100);
+});
 </script>
 
 </body>
