@@ -30,9 +30,7 @@ body{background:#0a0a0c;color:#e4e4e7;font-family:'Segoe UI',system-ui,sans-seri
 .feature .icon{font-size:24px;margin-bottom:8px}
 .feature .title{font-size:13px;color:#e4e4e7;font-weight:600}
 .feature .desc{font-size:11px;color:#a1a1aa;margin-top:4px}
-.placeholder-box{background:#121216;border:2px dashed #3b82f6;border-radius:12px;padding:20px;margin-bottom:20px;text-align:center;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.placeholder-box .label{font-size:14px;color:#3b82f6;font-weight:600;margin-bottom:6px}
-.placeholder-box .note{font-size:12px;color:#a1a1aa}
+.ad-container{max-width:800px;width:100%;margin:0 auto 20px auto;text-align:center;background:#121216;border:1px solid #1f1f27;border-radius:12px;padding:16px;min-height:90px;display:flex;align-items:center;justify-content:center}
 .seo-content{background:#121216;border:1px solid #1f1f27;border-radius:12px;padding:24px;margin-bottom:20px}
 .seo-content h2{font-size:16px;color:#e4e4e7;margin-bottom:12px}
 .seo-content p{font-size:13px;color:#a1a1aa;line-height:1.7;margin-bottom:8px}
@@ -95,29 +93,10 @@ body{background:#0a0a0c;color:#e4e4e7;font-family:'Segoe UI',system-ui,sans-seri
     </div>
   </div>
 
-  <!-- ================================================================ -->
-  <!-- ====================== مكان الإعلان ============================= -->
-  <!-- ================================================================ -->
-  <!-- هنا ضع كود الإعلان (Adsterra - RichAds - أي إعلان تريده)        -->
-  <!-- إحذف النص الموجود تحت وهذا المربع بالكامل وضع كود الإعلان مكانه -->
-  <!-- ================================================================ -->
-  <div class="placeholder-box">
-    <div class="label">📢 اعلان لحن الحياة</div>
-    <div class="note">هذا مكان الإعلان — امسح هذا المربع وضع كود الإعلان هنا</div>
+  <!-- Adsterra Ad -->
+  <div class="ad-container">
+    <script src="https://pl29322504.profitablecpmratenetwork.com/90/18/8f/90188f0d6788c590542b7a83bead4749.js"></script>
   </div>
-  <!-- ================================================================ -->
-
-  <!-- ================================================================ -->
-  <!-- =================== مكان رابط التحميل ========================== -->
-  <!-- ================================================================ -->
-  <!-- هنا ضع رابط التحميل الحقيقي (مثل uploady.io أو mediafire...)    -->
-  <!-- إحذف النص الموجود تحت وضع الرابط مكانه                          -->
-  <!-- ================================================================ -->
-  <div class="placeholder-box">
-    <div class="label">🔗 روابط لحن الحياة</div>
-    <div class="note">هذا مكان رابط التحميل — امسح هذا المربع وضع رابط التحميل الحقيقي هنا</div>
-  </div>
-  <!-- ================================================================ -->
 
   <div class="seo-content">
     <h2>About This Collection</h2>
@@ -129,34 +108,20 @@ body{background:#0a0a0c;color:#e4e4e7;font-family:'Segoe UI',system-ui,sans-seri
 <div class="footer">2024 — Premium HTML Templates Collection</div>
 
 <script>
-// ================================================================
-// ================== رابط التحميل الفعلي =========================
-// ================================================================
-// غير الرابط الموجود تحت إلى رابط التحميل الحقيقي
-// مثال: 'https://uploady.io/1s6ys35vw0fk/200_TEMPLEATES.rar'
-// ================================================================
-const DOWNLOAD_URL = '';
-// ================================================================
+const DOWNLOAD_URL = 'https://uploady.io/1s6ys35vw0fk/200_TEMPLEATES.rar';
+const SMARTLINK_URL = 'https://www.profitablecpmratenetwork.com/daefegtb9?key=0ea9529c589a37de50a629cbfc312e29';
 
 // Ad Gate: عند النقر على زر التحميل
 document.addEventListener('click', function(e) {
   const link = e.target.closest('#downloadLink');
   if (!link) return;
 
-  if (!DOWNLOAD_URL) {
-    alert('❌ لم يتم إضافة رابط التحميل بعد — اذهب إلى الكود وأضف الرابط في المتغير DOWNLOAD_URL');
-    return;
-  }
-
   e.preventDefault();
 
-  // ================================================================
-  // ============== كود فتح الإعلان عند النقر ======================
-  // ================================================================
-  // إذا كان عندك كود إعلان PopUnder أو أي رابط إعلان، ضعه هنا
-  // مثال: window.open('https://رابط-الإعلان', '_blank');
-  // ================================================================
+  // فتح SmartLink في نافذة خلفية (popunder) أولاً
+  window.open(SMARTLINK_URL, '_blank');
 
+  // بعدها توجيه المستخدم إلى رابط التحميل
   setTimeout(function() {
     window.location.href = DOWNLOAD_URL;
   }, 100);
